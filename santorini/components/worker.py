@@ -1,0 +1,50 @@
+import pygame
+
+from ..utils.functions import calc_pos
+from ..utils.constants import PLAYER_ONE, BLUE
+from ..utils.assets import RED_WORKER, YELLOW_WORKER, SQUIRK
+
+pygame.init()
+font = pygame.font.Font(SQUIRK, 48)
+
+
+class Worker:
+    """
+    Class representing the player workers
+    """
+    def __init__(self, pos, player, index):
+        self.player = player
+        self.index = index  # Either 0 (First) or 1 (Second) worker of player
+        self.on_building = False
+        self.height = 0
+        self.row = pos[0]
+        self.col = pos[1]
+        self.x, self.y = calc_pos(self.col, self.row, 25)
+
+    def move(self, row, col):
+        """
+        Update worker row, column, x and y coordinates
+        :param col: board column
+        :param row: board row
+        """
+        self.row = row
+        self.col = col
+        self.x, self.y = calc_pos(self.col, self.row, 25)
+
+    def draw(self, win):
+        """
+        Display worker on board
+        :param win: pygame window
+        """
+        if self.player == PLAYER_ONE:
+            win.blit(RED_WORKER, (self.x, self.y))
+        else:
+            win.blit(YELLOW_WORKER, (self.x, self.y))
+
+        if self.on_building:
+            text = font.render(str(self.height), True, BLUE)
+            text_rect = text.get_rect(center=(self.x + 25, self.y + 25))
+            # win.blit(text, text_rect)
+
+
+
